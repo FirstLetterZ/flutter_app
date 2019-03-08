@@ -14,7 +14,7 @@ class CustomDialog extends StatelessWidget {
     this.contentPadding = const EdgeInsets.all(16.0),
     this.backgroundColor = Colors.white,
     this.elevation,
-    this.cancelable = true,
+    @required this.cancelable,
     this.onDismiss,
   })
       : super(key: key);
@@ -28,6 +28,9 @@ class CustomDialog extends StatelessWidget {
         child:
         WillPopScope(
           onWillPop: () {
+            if (this.onDismiss != null) {
+              this.onDismiss();
+            }
             return Future.value(cancelable);
           },
           child: IntrinsicWidth(

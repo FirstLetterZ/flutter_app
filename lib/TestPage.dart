@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/DialogUtil.dart';
+import 'package:flutter_app/util/CustomDialog.dart';
 import 'package:flutter_app/TestItem.dart';
 import 'package:flutter_app/TestModule.dart';
+import 'package:flutter_app/util/CustomToast.dart';
 
 class TestPage extends StatefulWidget {
   final List<ItemData> list = [new ItemData()];
@@ -54,8 +55,8 @@ class _TestPageState extends State<TestPage> {
               style: new TextStyle(color: Colors.black, fontSize: 18)
           ),
           onPressed: () {
-//            _toast(context, '点击了提交');
-            _showDialog();
+            _toast(context, '点击了提交');
+//            _showDialog();
           },
         ),
       ),
@@ -82,42 +83,25 @@ class _TestPageState extends State<TestPage> {
   }
 
   _toast(BuildContext context, String msg) async {
-    OverlayState overlayState = Overlay.of(context);
-    double op = 1.0;
-    OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
-      return Positioned(
-        top: MediaQuery
-            .of(context)
-            .size
-            .height * 2 / 3,
-        child: AnimatedOpacity(
-          child:
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(msg,
-              style: TextStyle(fontSize: 16, color: Colors.black,
-                  decoration: TextDecoration.none),
-            ),
-          ),
-          opacity: op,
-          duration: Duration(seconds: 1),
-        ),
-      );
-    });
-    overlayState.insert(overlayEntry);
-    //等待2秒
-    await Future.delayed(Duration(seconds: 2));
-    //移除
-    op = 0.0;
-    overlayEntry.markNeedsBuild();
-    //等待2秒
-    await Future.delayed(Duration(seconds: 2));
-    overlayEntry.remove();
+    toast(context, '第一条');
+    print('第一条:' + context.toString());
+    print('第一条:' + context.owner.toString());
+    await Future.delayed(Duration(milliseconds: 500));
+    toast(context, '第二条');
+    print('第二条:' + context.toString());
+    print('第二条:' + context.owner.toString());
+    await Future.delayed(Duration(milliseconds: 500));
+    if(context==null){
+      print('第三条:context==null');
+      return;
+    }
+    print('第三条:' + context.owner.toString());
+    toast(context, '第三条');
   }
 
   int i = 1;
 
-  _showDialog() async {
+  _showDialog() {
     showDialog(context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
