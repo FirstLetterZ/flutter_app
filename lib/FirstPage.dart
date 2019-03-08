@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/SecondPage.dart';
 
@@ -53,8 +54,11 @@ class _FirstPageItemState extends State<_FirstPageItem> {
         if (widget.position == 0) {
           Navigator.push(
             context,
-            new MaterialPageRoute(
-              builder: (context) => new SecondPage(),
+            CupertinoPageRoute(
+              title: 'test222',
+//              fullscreenDialog: true,
+              settings: RouteSettings(name: 'SecondPage'),
+              builder: (context) => SecondPage(),
             ),
           );
         } else {

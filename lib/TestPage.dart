@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/DialogUtil.dart';
 import 'package:flutter_app/TestItem.dart';
 import 'package:flutter_app/TestModule.dart';
 
@@ -53,8 +54,8 @@ class _TestPageState extends State<TestPage> {
               style: new TextStyle(color: Colors.black, fontSize: 18)
           ),
           onPressed: () {
-            _toast(context, '点击了提交');
-//            _showDialog(context);
+//            _toast(context, '点击了提交');
+            _showDialog();
           },
         ),
       ),
@@ -114,30 +115,69 @@ class _TestPageState extends State<TestPage> {
     overlayEntry.remove();
   }
 
-  _showDialog(BuildContext context) {
-    if (context == null) {
-      return;
-    }
-    showDialog(context: context, builder: (BuildContext context) {
-      AlertDialog alertDialog = AlertDialog(
-        title: Text('提示'),
-        content: Text('点击了提示'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('取消'),
-            onPressed: () {
-              Navigator.pop(context, true);
-              Navigator.pop(context, true);
-            },
-          ),
-          FlatButton(
-            child: Text('确定'),
-            onPressed: () {},
-          ),
-        ],
-      );
-      return alertDialog;
-    });
+  int i = 1;
+
+  _showDialog() async {
+    showDialog(context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return
+            CustomDialog(
+                cancelable: true,
+                contentPadding: EdgeInsets.all(0),
+                onDismiss: () {
+                  print('onDismiss');
+                },
+                child:
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        child:
+                        Text('标题', style: TextStyle(fontSize: 16))),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
+                        child:
+                        Text('内容', style: TextStyle(fontSize: 14))
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child:
+                          Container(
+                            height: 44,
+                            child: MaterialButton(
+                                padding: EdgeInsets.all(0),
+                                child: Text('取消'),
+                                color: Colors.yellow,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }),
+                          ),
+                        ),
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child:
+                          Container(
+                            height: 44,
+                            child: MaterialButton(
+                                padding: EdgeInsets.all(0),
+                                child: Text('确定'),
+                                color: Colors.yellow,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+            );
+        });
   }
 
 }
